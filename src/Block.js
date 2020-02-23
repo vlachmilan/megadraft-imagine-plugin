@@ -40,7 +40,8 @@ const styles = {
     width: "100%",
     textAlign: "center",
     resize: "none",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
+    backgroundColor: "inherit"
   }
 };
 
@@ -62,30 +63,34 @@ const Image = ({
 
   const focusStyle = focused ? styles.focus : null;
   return (
-    <Popover
-      style={styles.popover}
-      preferPlace="above"
-      place="column"
-      body={
-        <Toolbar changeSize={handleToolbarChangeWidth} size={selectedWidth} />
-      }
-      onOuterAction={handleClickOut}
-      isOpen={focused}
-    >
+    // <Popover
+    //   style={styles.popover}
+    //   preferPlace="above"
+    //   place="column"
+    //   body={
+    //     <Toolbar changeSize={handleToolbarChangeWidth} size={selectedWidth} />
+    //   }
+    //   onOuterAction={handleClickOut}
+    //   isOpen={focused}
+    // >
+    <Fragment>
       <img src={src} style={{ ...styles.image, ...focusStyle }} />
-    </Popover>
+    </Fragment>
+    // </Popover>
   );
 };
 
 export default function Block(props) {
-  const { data, container } = props;
+  const { data, container, blockProps } = props;
 
   const [focused, setFocused] = useState(false);
   const [title, setTitle] = useState(null);
   const blockRef = useRef(null);
 
+  const isReadOnly = blockProps.getReadOnly();
+
   useEffect(() => {
-    if (!container.readOnly) {
+    if (!isReadOnly) {
       document.addEventListener("mousedown", handleClickOut, false);
       return () => {
         document.removeEventListener("mousedown", handleClickOut, false);
@@ -94,7 +99,7 @@ export default function Block(props) {
   }, []);
 
   const handleClick = e => {
-    if (!container.readOnly) {
+    if (!isReadOnly) {
       setFocused(true);
     }
   };
@@ -114,7 +119,8 @@ export default function Block(props) {
   };
 
   const handleCaptionChange = e => {
-    container.updateData({ caption: e.target.value });
+    setTitle(e.target.value);
+    container.updateData({ caption: title });
   };
 
   const actions = [
@@ -132,7 +138,7 @@ export default function Block(props) {
           src={data.blob}
           handleToolbarChangeWidth={handleToolbarChangeWidth}
           focused={focused}
-          readOnly={container.readOnly}
+          readOnly={isReadOnly}
           handleClickOut={handleClickOut}
           selectedWidth={container.width}
         />
@@ -151,10 +157,10 @@ export default function Block(props) {
         <TextAreaAutoSize
           id="caption"
           rows={1}
-          disabled={container.readOnly}
-          placeholder="type a caption (optional)"
+          disabled={isReadOnly}
+          placeholder={isReadOnly ? title : "type a caption (optional)"}
           style={styles.input}
-          onChange={e => setTitle(e.target.value)}
+          onChange={handleCaptionChange}
           value={title}
         />
       </figcaption>
