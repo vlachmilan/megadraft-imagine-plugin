@@ -15,19 +15,17 @@ import { insertDataBlock } from "megadraft";
  */
 
 export default function Button(props) {
-  const { className } = props;
+  const { className, onChange, editorState } = props;
 
   const saveFiles = files => {
     if (files.length > 0) {
-      const blob = URL.createObjectURL(files[0]);
-
       const data = {
         type: constants.PLUGIN_TYPE,
         caption: "Initial plugin text",
-        blob: blob
+        file: files[0]
       };
 
-      props.onChange(insertDataBlock(props.editorState, data));
+      onChange(insertDataBlock(editorState, data));
     }
   };
 

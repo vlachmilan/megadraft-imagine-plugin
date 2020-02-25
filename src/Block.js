@@ -87,11 +87,49 @@ export default function Block(props) {
   const [title, setTitle] = useState(null);
   const blockRef = useRef(null);
 
-  const isReadOnly = blockProps.getReadOnly();
+  const isReadOnly = blockProps.getInitialReadOnly();
+
+  /***
+   * Upload a file with the passed in upload file function
+   * @params file -- file object
+   */
+  const uploadFile = file => {
+    if (blockProps.plugin.onFileUpload) {
+      const imageURL = blockProps.plugin.onFileUpload(file);
+      if (typeof imageURL !== "string") {
+        throw new Error("onFileUpload callback must return image src string");
+      }
+
+      const data = {
+        imageSrc: imageURL,
+        file: null
+      };
+
+      container.updateData(data);
+      return;
+    }
+
+    // We don't have any onFileUpload callback
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      const data = {
+        imageSrc: reader.result,
+        file: null
+      };
+      container.updateData(data);
+    };
+  };
 
   useEffect(() => {
     if (!isReadOnly) {
       document.addEventListener("mousedown", handleClickOut, false);
+
+      if (!data.imageSrc && data.file) {
+        uploadFile(data.file);
+      }
+
       return () => {
         document.removeEventListener("mousedown", handleClickOut, false);
       };
@@ -114,28 +152,16 @@ export default function Block(props) {
     container.updateData({ width: width });
   };
 
-  const handleEdit = () => {
-    alert(JSON.stringify(this.props.data, null, 4));
-  };
-
   const handleCaptionChange = e => {
     setTitle(e.target.value);
     container.updateData({ caption: title });
   };
 
-  const actions = [
-    { key: "edit", icon: MegadraftIcons.EditIcon, action: handleEdit },
-    {
-      key: "delete",
-      icon: MegadraftIcons.DeleteIcon,
-      action: container.remove
-    }
-  ];
   return (
     <div ref={blockRef} onClick={handleClick}>
       <div style={styles.imageDiv}>
         <Image
-          src={data.blob}
+          src={data.imageSrc}
           handleToolbarChangeWidth={handleToolbarChangeWidth}
           focused={focused}
           readOnly={isReadOnly}
@@ -158,10 +184,10 @@ export default function Block(props) {
           id="caption"
           rows={1}
           disabled={isReadOnly}
-          placeholder={isReadOnly ? title : "type a caption (optional)"}
+          placeholder={isReadOnly ? data.title : "type a caption (optional)"}
           style={styles.input}
           onChange={handleCaptionChange}
-          value={title}
+          value={data.title}
         />
       </figcaption>
     </div>
