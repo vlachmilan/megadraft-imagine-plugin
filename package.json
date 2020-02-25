@@ -94,9 +94,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://milan.vlach.io/issues"
+    "url": "https://github.com/vlachmilan/megadraft-imagine-plugin/issues"
   },
-  "homepage": "https://milan.vlach.io",
+  "homepage": "https://github.com/vlachmilan/megadraft-imagine-plugin",
   "jest": {
     "transform": {
       "^.+\\.(js|jsx)$": "<rootDir>/node_modules/babel-jest"
