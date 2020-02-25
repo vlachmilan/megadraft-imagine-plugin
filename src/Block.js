@@ -154,7 +154,7 @@ export default function Block(props) {
 
   const handleCaptionChange = e => {
     setTitle(e.target.value);
-    container.updateData({ caption: title });
+    container.updateData({ title: title });
   };
 
   return (
