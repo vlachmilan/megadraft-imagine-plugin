@@ -1,6 +1,6 @@
 {
   "name": "megadraft-imagine-plugin",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "megadraft imagine plugin",
   "main": "lib/plugin.js",
   "dependencies": {
