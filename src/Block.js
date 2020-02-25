@@ -84,7 +84,6 @@ export default function Block(props) {
   const { data, container, blockProps } = props;
 
   const [focused, setFocused] = useState(false);
-  const [title, setTitle] = useState(null);
   const blockRef = useRef(null);
 
   const isReadOnly = blockProps.getInitialReadOnly();
@@ -153,8 +152,7 @@ export default function Block(props) {
   };
 
   const handleCaptionChange = e => {
-    setTitle(e.target.value);
-    container.updateData({ title: title });
+    container.updateData({ title: e.target.value });
   };
 
   return (
