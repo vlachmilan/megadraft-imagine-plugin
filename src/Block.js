@@ -92,9 +92,9 @@ export default function Block(props) {
    * Upload a file with the passed in upload file function
    * @params file -- file object
    */
-  const uploadFile = file => {
+  const uploadFile = async file => {
     if (blockProps.plugin.onFileUpload) {
-      const imageURL = blockProps.plugin.onFileUpload(file);
+      const imageURL = await blockProps.plugin.onFileUpload(file);
       if (typeof imageURL !== "string") {
         throw new Error("onFileUpload callback must return image src string");
       }
