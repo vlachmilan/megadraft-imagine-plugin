@@ -8,7 +8,8 @@
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "react-popover": "^0.5.10",
-    "react-textarea-autosize": "^7.1.2"
+    "react-textarea-autosize": "^7.1.2",
+    "draft-js": "latest"
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",
