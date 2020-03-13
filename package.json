@@ -1,15 +1,15 @@
 {
   "name": "megadraft-imagine-plugin",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "megadraft imagine plugin",
   "main": "lib/plugin.js",
   "dependencies": {
+    "draft-js": "latest",
     "megadraft": "^0.6.16",
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "react-popover": "^0.5.10",
-    "react-textarea-autosize": "^7.1.2",
-    "draft-js": "latest"
+    "react-textarea-autosize": "^7.1.2"
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",
