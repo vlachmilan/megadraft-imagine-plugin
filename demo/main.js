@@ -8,8 +8,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { MegadraftEditor } from "megadraft";
 import { editorStateFromRaw } from "megadraft/lib/utils";
+import { convertToRaw } from "draft-js";
 
-import plugin from "../src/plugin";
+import { createImagePlugin } from "../src/plugin";
+import { setImageRemoveCallback } from "../src/callback";
+
+import "regenerator-runtime/runtime";
 
 import INITIAL_CONTENT from "./content";
 
@@ -22,12 +26,19 @@ class Demo extends React.Component {
     this.onChange = ::this.onChange;
   }
 
-  onChange(content) {
-    this.setState({ content });
+  onChange(newContent) {
+    const { content } = this.state;
+
+    setImageRemoveCallback(newContent, content, element => {
+      console.log(convertToRaw(newContent.getCurrentContent()));
+      console.log(element);
+    });
+    this.setState({ content: newContent });
   }
 
   render() {
     const pluginName = "megadraft imagine plugin";
+    const imagePlugin = createImagePlugin();
     return (
       <div className="content">
         <header>
@@ -36,9 +47,10 @@ class Demo extends React.Component {
 
         <div className="editor">
           <MegadraftEditor
-            plugins={[plugin]}
+            plugins={[imagePlugin]}
             editorState={this.state.content}
             onChange={this.onChange}
+            onFileUpload={file => console.log(file)}
           />
         </div>
       </div>
