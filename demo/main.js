@@ -21,18 +21,25 @@ class Demo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      content: editorStateFromRaw(INITIAL_CONTENT)
+      content: editorStateFromRaw(INITIAL_CONTENT),
+      deletedImages: []
     };
     this.onChange = ::this.onChange;
   }
 
   onChange(newContent) {
-    const { content } = this.state;
+    const { content, deletedImages } = this.state;
 
-    setImageRemoveCallback(newContent, content, element => {
-      console.log(convertToRaw(newContent.getCurrentContent()));
-      console.log(element);
-    });
+    setImageRemoveCallback(
+      newContent,
+      content,
+      deletedImages,
+      deletedImages => {
+        console.log(deletedImages);
+        this.setState({ deletedImages: deletedImages });
+      }
+    );
+
     this.setState({ content: newContent });
   }
 
