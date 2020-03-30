@@ -1,10 +1,10 @@
 {
   "name": "megadraft-imagine-plugin",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "megadraft imagine plugin",
   "main": "lib/plugin.js",
   "dependencies": {
-    "draft-js": "latest",
+    "draft-js": "0.11.4",
     "megadraft": "^0.6.16",
     "react": "16.12.0",
     "react-dom": "16.12.0",
@@ -43,7 +43,9 @@
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "draft-js": "0.11.4"
+  },
   "scripts": {
     "start": "gulp dev-server",
     "test": "jest --env=jsdom",
